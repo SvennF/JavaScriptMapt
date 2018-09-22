@@ -12,6 +12,8 @@ class Memes {
         this.$bottomTextInput = document.querySelector('#bottomText');
         this.$imageInput = document.querySelector('#image');
         this.$downloadButton = document.querySelector('#downloadMeme');
+        this.$rotateButton = document.querySelector('#rotateMeme');
+        this.colorPicker = document.querySelector('#colorPicker');
         this.createCanvas();
         this.addEventListeners();
     }
@@ -23,6 +25,12 @@ class Memes {
         this.$canvas.width = canvasWidth;
         console.log(canvasHeight);
         console.log(canvasWidth);
+    }
+
+    rotateMeme() {
+        console.log('rotate button clicked');
+        let context = this.$canvas.getContext('2d');
+        context.rotate((45 * Math.PI / 180) * 25);
     }
 
     createMeme() {
@@ -45,9 +53,9 @@ class Memes {
                     context.lineWidth = fontSize / 5;
                     context.strokeStyle = 'white';
                     //    Fill text
-                    context.fillStyle = 'black';
+                    context.fillStyle = this.colorPicker.value;
                     context.lineJoin = 'round';
-
+                    
                     const topText = this.$topTextInput.value.toUpperCase();
                     const bottomText = this.$bottomTextInput.value.toUpperCase();
                     //    Top text
@@ -56,13 +64,13 @@ class Memes {
                     //    Bottom text
                     context.strokeText(bottomText, this.$canvas.width / 2, this.$canvas.height * (90 / 100));
                     context.fillText(bottomText, this.$canvas.width / 2, this.$canvas.height * (90 / 100));
-
                     this.resizeCanvas(this.$canvas.height, this.$canvas.width);
                 };
                 image.src = reader.result;
             };
             reader.readAsDataURL(this.$imageInput.files[0]);
             console.log('This will get printed first');
+            console.log(this.colorPicker.value);
         }
 
     }
@@ -103,7 +111,8 @@ class Memes {
     addEventListeners() {
         this.createMeme = this.createMeme.bind(this);
         this.$downloadButton.addEventListener('click', this.downloadMeme.bind(this));
-        let inputNodes = [this.$topTextInput, this.$bottomTextInput, this.$imageInput];
+        this.$rotateButton.addEventListener('click', this.rotateMeme.bind(this));
+        let inputNodes = [this.$topTextInput, this.$bottomTextInput, this.$imageInput, this.colorPicker];
 
         inputNodes.forEach(element => element.addEventListener('keyup', this.createMeme));
         inputNodes.forEach(element => element.addEventListener('change', this.createMeme));
