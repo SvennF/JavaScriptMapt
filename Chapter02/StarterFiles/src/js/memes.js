@@ -1,8 +1,10 @@
 import './general';
+
 console.log('Meme js file');
 const deviceWidth = window.innerWidth;
-class Memes{
-    constructor(){
+
+class Memes {
+    constructor() {
         console.log('inside meme class');
         this.$canvas = document.querySelector('#imgCanvas');
         this.$topTextInput = document.querySelector('#topText');
